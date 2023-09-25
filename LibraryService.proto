@@ -1,0 +1,29 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service LibraryManagement{
+    rpc createBook(Book) returns (Responds);
+    rpc updateBook(Book) returns (Responds);
+    rpc getBookByTitle(google.protobuf.StringValue) returns (Book);
+    rpc getAllBooks(google.protobuf.Empty) returns (stream Book);
+    rpc deleteBook(google.protobuf.StringValue) returns (Responds);
+}
+
+message Book{
+    string Title = 1;
+    string Author_1 = 2;
+    string Author_2 = 3;
+    string Location = 4;
+    string ISBN = 5;
+    string Status = 6;
+}
+
+message Responds{
+    string message = 1;
+}
+
+message User{
+    string  UserName = 1;
+    string UserID = 2;
+}
