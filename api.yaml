@@ -1,0 +1,146 @@
+openapi: 3.0.1
+info:
+  title: Faculty Management API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/faculty/api/v1
+paths:
+  /lecturers:
+    get:
+      summary: Get all lecturers
+      operationId: getAllLecturers
+      responses:
+        '200':
+          description: A list of lecturers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lecturer"
+    post:
+      summary: Add a new lecturer
+      operationId: addLecturer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+      responses:
+        '201':
+          description: Lecturer successfully added
+          content:
+            application/json:
+              schema:
+                properties:
+                  staffNumber:
+                    type: string
+  /lecturers/{staffNumber}:
+    get:
+      summary: Get details of a specific lecturer by staff number
+      operationId: getLecturerByStaffNumber
+      parameters:
+        - name: staffNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lecturer details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lecturer"
+        '404':
+          description: Lecturer not found
+    put:
+      summary: Update an existing lecturer's information
+      operationId: updateLecturer
+      parameters:
+        - name: staffNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+      responses:
+        '204':
+          description: Lecturer information updated successfully
+        '404':
+          description: Lecturer not found
+    delete:
+      summary: Delete a lecturer's record by staff number
+      operationId: deleteLecturer
+      parameters:
+        - name: staffNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Lecturer record deleted successfully
+        '404':
+          description: Lecturer not found
+  /courses/{courseCode}/lecturers:
+    get:
+      summary: Get all lecturers that teach a certain course
+      operationId: getLecturersByCourse
+      parameters:
+        - name: courseCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of lecturers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lecturer"
+  /offices/{officeNumber}/lecturers:
+    get:
+      summary: Get all lecturers in the same office
+      operationId: getLecturersByOffice
+      parameters:
+        - name: officeNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of lecturers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lecturer"
+components:
+  schemas:
+    Lecturer:
+      type: object
+      properties:
+        staffNumber:
+          type: string
+        officeNumber:
+          type: string
+        staffName:
+          type: string
+        title:
+          type: string
+        courses:
+          type: array
+          items:
+            type: string
